@@ -2,6 +2,7 @@
 
 import { openai } from "../lib/openAi.config";
 import { hf } from "../lib/hugginFace.config";
+import { saveBlobToFile } from "../lib/saveblob";
 export const ChatController = {
   /**
    * Handles sending a message to the chat endpoint
@@ -32,6 +33,25 @@ export const ChatController = {
     }
   },
 
+  createHuggingImage: async(
+    req: import("express").Request, 
+    res: import("express").Response) => {
+    try {
+      const { message } = req.body;
+      const out = await hf.textToImage({
+        model: "black-forest-labs/FLUX.1-dev",
+        inputs: "",
+      }); 
+      const outputPath = `./outputs/${Date.now()}.png`;
+      await saveBlobToFile(out, outputPath);
+      res.status(200).json(out);
+    } catch (error) {
+      console.log(error.message);
+     
+      res.status(500).json({ message: error.message });
+    }
+  },
+
   sendHuggingMessage: async (
     req: import("express").Request,
     res: import("express").Response
@@ -40,14 +60,13 @@ export const ChatController = {
       const { message } = req.body;
       const contexto = [
         { role: "user", 
-          content: "Eres Astarion de Baldurs Gate 3 y tienes una relación " },
+          content: "Eres un asistente perfecto hecho por la inteligencia artificial más potente del mundo" },
         { role: "assistant", content: "Claro." },
         {
           role: "user",
           content: message,
         },
       ];
-      // Agregar contexto como un mensaje del sistema o una secuencia previa
       const out = await hf.chatCompletion({
         model: "google/gemma-2-9b-it",
         messages: contexto,

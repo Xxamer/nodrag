@@ -24,7 +24,11 @@
     "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
+    "@huggingface/inference": "^2.8.1",
+    "@langchain/community": "^0.3.15",
+    "@langchain/core": "^0.3.18",
     "express": "^4.17.1",
+    "langchain": "^0.3.6",
     "openai": "^4.72.0"
   }
 }

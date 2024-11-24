@@ -8,7 +8,7 @@ const router = Router();
  * @returns {Promise<void>}
  */
 router.get("/health", (req, res: any) => {
-    res.status(200).json({ message: "This project is working" });
+    res.status(200).json({ message: "This project is working2" });
 });
 
 export default router;

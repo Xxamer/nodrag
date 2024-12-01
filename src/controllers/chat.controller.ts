@@ -40,7 +40,7 @@ export const ChatController = {
       const { message } = req.body;
       const out = await hf.textToImage({
         model: "black-forest-labs/FLUX.1-dev",
-        inputs: "",
+        inputs: message,
       }); 
       const outputPath = `./outputs/${Date.now()}.png`;
       await saveBlobToFile(out, outputPath);
@@ -51,6 +51,7 @@ export const ChatController = {
       res.status(500).json({ message: error.message });
     }
   },
+  
 
   sendHuggingMessage: async (
     req: import("express").Request,

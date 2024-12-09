@@ -3,6 +3,7 @@
 import { openai } from "../lib/openAi.config";
 import { hf } from "../lib/hugginFace.config";
 import { saveBlobToFile } from "../lib/saveblob";
+import path from 'path';
 export const ChatController = {
   /**
    * Handles sending a message to the chat endpoint
@@ -42,9 +43,10 @@ export const ChatController = {
         model: "black-forest-labs/FLUX.1-dev",
         inputs: message,
       }); 
-      const outputPath = `./outputs/${Date.now()}.png`;
-      await saveBlobToFile(out, outputPath);
-      res.status(200).json(out);
+      const outputPath = `outputs/${Date.now()}.png`;
+      await saveBlobToFile(out, `./${outputPath}`);
+      const fullPath =  `${req.protocol}://${req.get('host')}/${outputPath}`;
+      res.status(200).json({ path: fullPath });
     } catch (error) {
       console.log(error.message);
      
